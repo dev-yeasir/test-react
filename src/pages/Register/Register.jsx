@@ -25,7 +25,7 @@ function Register() {
     const onSubmit = (data) => {
         setError('');
         if (!acceptTerms) {
-            return setError('Please acceptb  our terms and conditions.');
+            return setError('Please  pokat  our terms and conditions.');
         }
         setLoading(true);
         axios
