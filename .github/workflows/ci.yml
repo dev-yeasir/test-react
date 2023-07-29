@@ -1,36 +1,32 @@
-name: CI/CD
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install Node.js ${{ matrix.node-version }}
+on: 
+    push:
+      branches:
+        - main
+  name: 🚀 Deploy website on push
+  
+  jobs:
+    web-deploy:
+      name: 🎉 Deploy
+      runs-on: ubuntu-latest
+      steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+  
+      - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the project
-        run: npm run build
-
-      - name: Deploy to cPanel via FTP
+          node-version: '16'
+        
+      - name: 🔨 Build Project
         run: |
-          apt-get -qq install -y lftp
-          lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; set ssl:verify-certificate no; mirror -R --reverse --verbose --exclude-glob .git --exclude node_modules dist public_html"
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        #   local-dir: dist
-        #   remote-dir: public_html # Adjust this based on your cPanel file structure
+          npm install
+          npm run build
+      
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PWD }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
+          local-dir: ./build/
