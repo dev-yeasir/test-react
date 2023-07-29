@@ -25,10 +25,12 @@ jobs:
         run: npm run build
 
       - name: Deploy to cPanel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist
-          remote-dir: public_html # Adjust this based on your cPanel file structure
+        run: |
+          apt-get -qq install -y lftp
+          lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; set ssl:verify-certificate no; mirror -R --reverse --verbose --exclude-glob .git --exclude node_modules dist public_html"
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        #   local-dir: dist
+        #   remote-dir: public_html # Adjust this based on your cPanel file structure
