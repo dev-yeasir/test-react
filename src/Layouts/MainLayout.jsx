@@ -1,10 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import Navbar from '../components/Navbar/Navbar';
 
 function MainLayout() {
     return (
         <div>
-            <h1>Heder</h1>
+            <Navbar />
             <div className="container mx-auto">
                 <Outlet />
             </div>

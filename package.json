@@ -1,6 +1,5 @@
 {
   "name": "code-tikki",
-  "homepage": "https://estiak.one",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -18,7 +17,8 @@
     "react-hook-form": "^7.45.2",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.2",
-    "sweetalert2": "^11.7.20"
+    "sweetalert2": "^11.7.20",
+    "vite-plugin-rewrite-all": "^1.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
